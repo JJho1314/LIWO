@@ -1,0 +1,12 @@
+<launch>
+    <node pkg="lio_wheel" type="dr_odo_node" name="dr_odo_node" output="log">
+        <param name="screen" type="bool" value="false"/>
+    </node>
+   <node pkg="lio_wheel" type="distortion_removal_node" name="distortion_removal_node" output="log">
+       <param name="screen" type="bool" value="false"/>
+   </node>
+</launch>
+
+
+
+

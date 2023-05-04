@@ -1,0 +1,75 @@
+common:
+  lid_topic: "/zvision_lidar_points"
+  imu_topic: "/Ser_imu"
+  sjtu_vel_topic: "/current_speed"
+  vel_topic: "/Ser_odom"
+  cam_topic: "/camera/rgb/image_raw"
+  time_per_lidar: 0.04        # second, fire time
+  use_imu_time: true         #  是否使用imu的时间戳，默认为 true
+  use_sjtu_config: false    # 是否在交大数据集上进行测试
+
+pose_source:
+  ## for use
+  dr_odo_topic: /pose_source/dr_odo
+  ## for rviz
+  dr_odo_tf_topic: /pose_source/dr_odo/tf
+  dr_odo_path_topic: /pose_source/dr_odo/path
+
+distortion_removal:
+  # topics
+  distort_cloud_topic: /distort_cloud
+  undistort_cloud_topic: /undistort_cloud
+  # params for checking distortion_removal
+  check_undistort: false
+  save_cloud: false
+  startSaving_frameCnt: 10
+
+preprocess:
+  scan_rate: 10                # 扫描周期, 单位: Hz,
+  blind: 0.25                # 0.5 * 0.5 去除过近点
+  max_blind: 1600             #  40 * 40  去除过远点
+  ground_height: -0.40          # 地面区域点的最高点坐标
+  top_height: 3.0          # 所保留的最高点的高度坐标
+  ground_filter_num: 10                #  地面区域点云去除倍率
+  eigen_degen: 3.0                #  log10(倒数第二小特征值/最小特征值) 退化判断
+
+mapping:
+  acc_cov: 0.1
+  gyr_cov: 0.1
+  b_acc_cov: 0.0001
+  b_gyr_cov: 0.0001
+  det_range: 100.0
+  extrinsic_est_en: true      # true: 允许IMU 和 LIDAR 的在线外参、时延标定
+
+  #####   轮速计到imu的外参（机械外参）
+  imu_t_wheel: [ 0.0, -0.06335, -0.11668 ]
+  imu_R_wheel: [ 0, -1, 0,
+                 1, 0, 0,
+                 0, 0, 1 ]
+
+  #######  激光雷达到imu的外参（机械外参）
+  imu_t_lidar: [ -0.005, -0.126, -0.014 ] # trans and rot of T_lidar_to_imu  以imu为基准坐标系
+  imu_R_lidar: [ 1, 0, 0,
+                 0, 1, 0,
+                 0, 0, 1 ]
+
+publish:
+  path_en: true
+  scan_publish_en: true       # false: close all the point cloud output
+  dense_publish_en: true       # false: low down the points number in a global-frame point clouds scan.
+  scan_bodyframe_pub_en: true  # true: output the point cloud scans in IMU-body-frame
+
+pcd_save:
+  pcd_save_en: false
+  interval: -1
+
+## 用于apriltag轨迹评估
+evaluation:
+  freq: 30
+  use_evo_AprilTag: true
+  td: 0
+  Cam2Imu_R: [ 4.9160022284921556e-02, -5.1573149250153549e-02, -9.9745852168667537e-01,
+               9.9738151811421571e-01, -5.0500030382059524e-02, 5.1767308753631724e-02,
+               -5.3041488790651015e-02, -9.9739157666777634e-01, 4.8955523274077706e-02 ]
+  Cam2Imu_T: [ -4.7569963966224725e-02, -8.2428787354902111e-02, -1.2574466987506736e-01 ]
+  cam_param: camera_intrinsics.yaml

@@ -1,0 +1,12 @@
+#ifndef PROJECT_GLOBAL_DEFINITION_H_IN_
+#define PROJECT_GLOBAL_DEFINITION_H_IN_
+
+#include <string>
+
+const std::string WORK_SPACE_PATH = "@WORK_SPACE_PATH@";
+const std::string VELODYNE_YAML_PATH = WORK_SPACE_PATH + "/config/sjtu_config.yaml";
+
+
+#define USE_EXT_DISTORTION_REMOVAL
+
+#endif
